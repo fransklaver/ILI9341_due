@@ -24,7 +24,7 @@ Copyright (c) 2015  Marek Buriak
 #endif
 
 // uncomment if you want to use SPI transactions. Uncomment it if the library does not work when used with other libraries.
-//#define ILI_USE_SPI_TRANSACTION
+#define ILI_USE_SPI_TRANSACTION
 
 // comment out if you do need to use scaled text. The text will draw then faster.
 #define TEXT_SCALING_ENABLED
