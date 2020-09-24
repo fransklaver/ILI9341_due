@@ -78,11 +78,12 @@ static const uint8_t init_commands[] PROGMEM = {
 };
 
 
-ILI9341_due::ILI9341_due(uint8_t cs, uint8_t dc, uint8_t rst)
+ILI9341_due::ILI9341_due(uint8_t cs, uint8_t dc, uint8_t rst, ResetPolarity pol)
 {
 	_cs = cs;
 	_dc = dc;
 	_rst = rst;
+	_rstpol = pol;
 	_spiClkDivider = ILI9341_SPI_CLKDIVIDER;
 	_width = ILI9341_TFTWIDTH;
 	_height = ILI9341_TFTHEIGHT;
@@ -112,6 +113,25 @@ ILI9341_due::ILI9341_due(uint8_t cs, uint8_t dc, uint8_t rst)
 
 }
 
+void ILI9341_due::resetDisplay()
+{
+	int nrst = HIGH;
+	int rst = LOW;
+	if (_rstpol == ResetPolarity::ActiveHigh) {
+		nrst = LOW;
+		rst = HIGH;
+	}
+
+	if (_rst < 255) {
+		pinMode(_rst, OUTPUT);
+		digitalWrite(_rst, nrst);
+		delay(5);
+		digitalWrite(_rst, rst);
+		delay(20);
+		digitalWrite(_rst, nrst);
+		delay(150);
+	}
+}
 
 bool ILI9341_due::begin(void)
 {
@@ -135,16 +155,7 @@ bool ILI9341_due::begin(void)
 #endif
 		setSPIClockDivider(ILI9341_SPI_CLKDIVIDER);
 
-		// toggle RST low to reset
-		if (_rst < 255) {
-			pinMode(_rst, OUTPUT);
-			digitalWrite(_rst, HIGH);
-			delay(5);
-			digitalWrite(_rst, LOW);
-			delay(20);
-			digitalWrite(_rst, HIGH);
-			delay(150);
-		}
+		resetDisplay();
 
 		const uint8_t *addr = init_commands;
 		while (1) {

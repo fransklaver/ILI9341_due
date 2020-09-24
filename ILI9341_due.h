@@ -389,6 +389,11 @@ typedef enum {
 #define SCANLINE_BUFFER_SIZE SCANLINE_PIXEL_COUNT
 #endif
 
+enum class ResetPolarity {
+	ActiveHigh,
+	ActiveLow,
+};
+
 class ILI9341_due
 	: public Print
 {
@@ -410,6 +415,7 @@ protected:
 	void printHex32(uint32_t *data, uint8_t length);
 
 	uint8_t  _rst;
+	ResetPolarity _rstpol;
 	uint8_t _hiByte, _loByte;
 	bool _isIdle, _isInSleep;
 	uint16_t _color;
@@ -494,8 +500,10 @@ protected:
 
 	bool pinIsChipSelect(uint8_t cs);
 
+	void resetDisplay();
+
 public:
-	ILI9341_due(uint8_t cs, uint8_t dc, uint8_t rst = 255);
+	ILI9341_due(uint8_t cs, uint8_t dc, uint8_t rst = 255, ResetPolarity pol = ResetPolarity::ActiveLow);
 
 
 	bool begin(void);
