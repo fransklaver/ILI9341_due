@@ -19,7 +19,7 @@
 #include <ILI9341_due.h>
 #include <SystemFont5x7.h>
 
-#define TFT_RST 8
+#define TFT_RST 22
 #define TFT_DC 9
 #define TFT_CS 10
 
