@@ -24,7 +24,7 @@
 #define TFT_CS 10
 
 // Use hardware SPI (on Uno, #13, #12, #11) and the above for CS/DC
-ILI9341_due tft = ILI9341_due(TFT_CS, TFT_DC, TFT_RST);
+ILI9341_due tft = ILI9341_due(TFT_CS, TFT_DC, TFT_RST, ResetPolarity::ActiveHigh);
 
 void setup() {
   Serial.begin(9600);
